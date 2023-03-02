@@ -1,7 +1,5 @@
 from pydantic import BaseModel
 from typing import List
-from enum import Enum
-from datetime import time, date, datetime
 
 
 class BankAccount(BaseModel):

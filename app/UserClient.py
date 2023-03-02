@@ -23,12 +23,9 @@ class UserClient(object):
         user_queue = self.channel.queue_declare(queue='', exclusive=True)
         self.user_queue = str(uuid.uuid4())
 
-        # Устанавливает имя очереди на прослушку ответов
         callback_queue = self.channel.queue_declare(queue='', exclusive=True)
         self.callback_queue = callback_queue.method.queue
 
-        # Устанавливает очередь на прослушку (в которой будет получать ответы на сообщения)
-        # и устанавливает функцию которая будет обрабатывать ответ
         self.channel.basic_consume(
             queue=self.callback_queue,
             on_message_callback=self.on_response,
@@ -37,7 +34,6 @@ class UserClient(object):
         self.response = None
         self.corr_id = None
 
-    # функция которая выполняется при получении ответа, сравнивает id запросов
     def on_response(self, ch, method, props, body):
         if self.corr_id == props.correlation_id:
             body = json.loads(body)
@@ -45,9 +41,7 @@ class UserClient(object):
 
     def send(self, body):
         self.response = None
-        # генерим id запроса
         self.corr_id = str(uuid.uuid4())
-        # отправляем сообщение на Rabbit и указываем в какую очередь вернуть ответ
         self.channel.basic_publish(
             exchange='',
             routing_key=self.user_queue,

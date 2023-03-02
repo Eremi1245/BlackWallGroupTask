@@ -53,7 +53,6 @@ def worker(user_queue):
                          body=response_str)
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
-    # устанавливаем прослушку очереди
     channel.basic_consume(queue=user_queue, on_message_callback=on_request)
 
     print(" [x] Awaiting RPC requests")

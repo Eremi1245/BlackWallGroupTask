@@ -8,7 +8,6 @@ from fastapi.encoders import jsonable_encoder
 router = APIRouter(
     prefix="/clients",
     tags=["clients"],
-    # dependencies=[Depends(_users_actions.get_current_user)],
     responses={404: {"description": "Not found"}},
 )
 
